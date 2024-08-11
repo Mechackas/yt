@@ -125,7 +125,7 @@ gltfLoader.load(
 
     // load video
     const video = document.createElement('video');
-    video.src = 'textures/arcane.mp4';
+    video.src = 'textures/new.mp4';
     video.muted = true;
     video.playsInline = true;
     video.autoplay = true;
@@ -187,7 +187,7 @@ gltfLoader.load(
 
         // adding texture to book
         const bookTexture = new THREE.TextureLoader().load(
-          'textures/book-inner.jpg'
+          'textures/book-inner.png'
         );
         bookTexture.flipY = false;
         child.material = new THREE.MeshStandardMaterial({
@@ -317,7 +317,7 @@ function loadIntroText() {
       new THREE.MeshPhongMaterial({ color: 0x171f27, flatShading: true }),
       new THREE.MeshPhongMaterial({ color: 0xffffff }),
     ];
-    const titleGeo = new TextGeometry('Asher Mechack', {
+    const titleGeo = new TextGeometry('Y-T Restaurant', {
       font: font,
       size: 0.08,
       height: 0.04,
@@ -334,7 +334,7 @@ function loadIntroText() {
       new THREE.MeshPhongMaterial({ color: 0xffffff }),
     ];
     const subTitleGeo = new TextGeometry(
-      'Software&Mobile Apps Developer/ Graphic Designer/ Music Lover',
+      'Burger-Creperie-Tea Mixologie- Bar-Cocktails, Music, Bnb-rooms',
       {
         font: font,
         size: 0.022,
