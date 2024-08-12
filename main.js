@@ -17,6 +17,7 @@ let titleText = null;
 let subtitleText = null;
 let mixer;
 let burger = null;
+let food = null;
 let isMobile = window.matchMedia('(max-width: 992px)').matches;
 let canvas = document.querySelector('.experience-canvas');
 const loaderWrapper = document.getElementById('loader-wrapper');
@@ -187,22 +188,7 @@ gltfLoader.load(
 
       // transparent texture for glass
       if (child.name === 'CPU') {
-        child.children[0].material = new THREE.MeshPhysicalMaterial();
-        child.children[0].material.roughness = 0;
-        child.children[0].material.color.set(0x999999);
-        child.children[0].material.ior = 3;
-        child.children[0].material.transmission = 2;
-        child.children[0].material.opacity = 0.8;
-        child.children[0].material.depthWrite = false;
-        child.children[0].material.depthTest = false;
-        child.children[1].material = new THREE.MeshPhysicalMaterial();
-        child.children[1].material.roughness = 0;
-        child.children[1].material.color.set(0x999999);
-        child.children[1].material.ior = 3;
-        child.children[1].material.transmission = 1;
-        child.children[1].material.opacity = 0.8;
-        child.children[1].material.depthWrite = false;
-        child.children[1].material.depthTest = false;
+        child.visible = false;
       }
 
       if (child.name === 'Book') {
@@ -228,6 +214,7 @@ gltfLoader.load(
     animate();
 
     loadBurger();
+    loadFood();
 
     // add animation
     mixer = new THREE.AnimationMixer(room.scene);
@@ -271,6 +258,31 @@ function loadBurger() {
       });
 
       scene.add(burger);
+    },
+    undefined,
+    function (error) {
+      console.error('An error occurred loading the burger model:', error);
+    }
+  );
+}
+
+function loadFood() {
+  gltfLoader.load(
+    'models/fries.glb',
+    function (foodModel) {
+      food = foodModel.scene;
+      food.scale.set(1.2, 1.2, 1.2); // Adjust scale as needed
+      food.position.set(0.1, 0.00, -0.3); // Adjust position to place it on the table
+      food.rotation.y = Math.PI / 4; // Rotate if needed
+
+      burger.traverse((child) => {
+        if (child.isMesh) {
+          child.castShadow = true;
+          child.receiveShadow = true;
+        }
+      });
+
+      scene.add(food);
     },
     undefined,
     function (error) {
