@@ -157,10 +157,32 @@ gltfLoader.load(
       }
 
       if (child.name === 'Stand') {
-        child.children[0].material = new THREE.MeshBasicMaterial({
+        // Assume child.children[0] is the screen and child.children[1] is the frame
+        // If this assumption is incorrect, you may need to adjust the indices
+      
+        // Scale and adjust the screen
+        const screen = child.children[0];
+        screen.material = new THREE.MeshBasicMaterial({
           map: videoTexture,
         });
         video.play();
+        screen.scale.set(1.6, 1.6, 1.6);
+        screen.position.z += 0.0;
+      
+        // Scale and adjust the frame
+        const frame = child.children[1];
+        if (frame) {
+          frame.scale.set(1.8, 1.5, 1);  // Scale the frame to match the screen
+          frame.position.z += 0.01;  // Move the frame slightly behind the screen
+        }
+      
+        // If you want to remove the frame entirely, uncomment the next line:
+         if (frame) child.remove(frame);
+      
+        // Adjust video texture to fit the screen without stretching
+        videoTexture.repeat.set(1, 1);
+        videoTexture.offset.set(0, 0);
+        videoTexture.center.set(0.5, 0.5);
       }
 
       // transparent texture for glass
