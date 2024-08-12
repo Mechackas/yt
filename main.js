@@ -16,6 +16,7 @@ let lightSwitch = null;
 let titleText = null;
 let subtitleText = null;
 let mixer;
+let burger = null;
 let isMobile = window.matchMedia('(max-width: 992px)').matches;
 let canvas = document.querySelector('.experience-canvas');
 const loaderWrapper = document.getElementById('loader-wrapper');
@@ -204,6 +205,8 @@ gltfLoader.load(
     scene.add(room.scene);
     animate();
 
+    loadBurger();
+
     // add animation
     mixer = new THREE.AnimationMixer(room.scene);
     const clips = room.animations;
@@ -228,6 +231,31 @@ gltfLoader.load(
     console.error(error);
   }
 );
+
+function loadBurger() {
+  gltfLoader.load(
+    'models/fast.glb',
+    function (burgerModel) {
+      burger = burgerModel.scene;
+      burger.scale.set(0.3, 0.3, 0.3); // Adjust scale as needed
+      burger.position.set(0.1, 0.03, 0.3); // Adjust position to place it on the table
+      burger.rotation.y = Math.PI / 1; // Rotate if needed
+
+      burger.traverse((child) => {
+        if (child.isMesh) {
+          child.castShadow = true;
+          child.receiveShadow = true;
+        }
+      });
+
+      scene.add(burger);
+    },
+    undefined,
+    function (error) {
+      console.error('An error occurred loading the burger model:', error);
+    }
+  );
+}
 
 // ADD LIGHT
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
