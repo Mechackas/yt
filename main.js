@@ -237,8 +237,8 @@ function loadBurger() {
     'models/fast.glb',
     function (burgerModel) {
       burger = burgerModel.scene;
-      burger.scale.set(0.3, 0.3, 0.3); // Adjust scale as needed
-      burger.position.set(0.1, 0.03, 0.3); // Adjust position to place it on the table
+      burger.scale.set(0.4, 0.4, 0.4); // Adjust scale as needed
+      burger.position.set(0.1, 0.04, 0.05); // Adjust position to place it on the table
       burger.rotation.y = Math.PI / 1; // Rotate if needed
 
       burger.traverse((child) => {
@@ -311,21 +311,21 @@ scene.add(pointLight4);
 // scene.add(pointLightHelper);
 
 // ADD GUI
-// const gui = new dat.GUI();
-// const options = {
-//   lightX: 0,
-//   lightY: 0.08,
-//   lightZ: 0,
-// };
-// gui.add(options, 'lightX').onChange((e) => {
-//   mobileLight.position.setX(e);
-// });
-// gui.add(options, 'lightY').onChange((e) => {
-//   mobileLight.position.setY(e);
-// });
-// gui.add(options, 'lightZ').onChange((e) => {
-//   mobileLight.position.setZ(e);
-// });
+ const gui = new dat.GUI();
+ const options = {
+   lightX: 0,
+   lightY: 0.08,
+   lightZ: 0,
+ };
+ gui.add(options, 'lightX').onChange((e) => {
+   mobileLight.position.setX(e);
+ });
+ gui.add(options, 'lightY').onChange((e) => {
+   mobileLight.position.setY(e);
+ });
+ gui.add(options, 'lightZ').onChange((e) => {
+   mobileLight.position.setZ(e);
+ });
 
 const clock = new THREE.Clock();
 function animate() {
