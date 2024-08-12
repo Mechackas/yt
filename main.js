@@ -275,7 +275,7 @@ function loadFood() {
       food.position.set(0.1, 0.00, -0.3); // Adjust position to place it on the table
       food.rotation.y = Math.PI / 4; // Rotate if needed
 
-      burger.traverse((child) => {
+      food.traverse((child) => {
         if (child.isMesh) {
           child.castShadow = true;
           child.receiveShadow = true;
@@ -548,6 +548,18 @@ function switchTheme(themeType) {
   }
 }
 
+function initMap() {
+  const location = { lat: -1.9441, lng: 30.0619 }; // Coordinates for Kigali, Rwanda
+  const map = new google.maps.Map(document.getElementById("map"), {
+    zoom: 15,
+    center: location,
+  });
+  new google.maps.Marker({
+    position: location,
+    map: map,
+  });
+}
+
 function enableOrbitControls() {
   controls.enabled = true;
 }
@@ -722,6 +734,19 @@ function projectsMenuListener() {
       });
     });
 }
+
+function locationMenuListener() {
+  document.getElementById('location-menu').addEventListener('click', function(e) {
+    e.preventDefault();
+    document.querySelector('.section--about').style.display = 'none';
+    document.querySelector('.section--location').style.display = 'block';
+  });
+}
+
+// Call this function along with your other listener setup functions
+locationMenuListener();
+
+  locationMenuListener();
 
 function init3DWorldClickListeners() {
   const mousePosition = new THREE.Vector2();
