@@ -18,6 +18,8 @@ let subtitleText = null;
 let mixer;
 let burger = null;
 let food = null;
+let counter = null;
+let can = null;
 let isMobile = window.matchMedia('(max-width: 992px)').matches;
 let canvas = document.querySelector('.experience-canvas');
 const loaderWrapper = document.getElementById('loader-wrapper');
@@ -30,20 +32,20 @@ let clipNames = [
 ];
 let projects = [
   {
-    image: 'textures/project-spaze.webp',
-    url: 'https://www.spaze.social/',
+    image: 'textures/burgers.png',
+    url: '',
   },
   {
-    image: 'textures/project-myteachers.jpg',
-    url: 'https://myteachers.com.au/',
+    image: 'textures/chop.png',
+    url: '',
   },
   {
-    image: 'textures/project-wholesale.jpg',
-    url: 'https://wholesale.com.np/',
+    image: 'textures/drinks.png',
+    url: '',
   },
   {
-    image: 'textures/project-pelotero.jpg',
-    url: 'https://www.peloterosenlaweb.com/',
+    image: 'textures/sides.png',
+    url: '',
   },
 ];
 let aboutCameraPos = {
@@ -196,7 +198,7 @@ gltfLoader.load(
 
         // adding texture to book
         const bookTexture = new THREE.TextureLoader().load(
-          'textures/book-inner.png'
+          'textures/book.png'
         );
         bookTexture.flipY = false;
         child.material = new THREE.MeshStandardMaterial({
@@ -215,6 +217,8 @@ gltfLoader.load(
 
     loadBurger();
     loadFood();
+    loadCounter();
+    loadCan();
 
     // add animation
     mixer = new THREE.AnimationMixer(room.scene);
@@ -292,6 +296,56 @@ function loadFood() {
   );
 }
 
+function loadCounter() {
+  gltfLoader.load(
+    'models/bar_counter.glb',
+    function (counterModel) {
+      counter = counterModel.scene;
+      counter.scale.set(0.5, 0.4, 0.6); // Adjust scale as needed
+      counter.position.set(-0.3, -0.5, 1.2); // Adjust position to place it on the table
+      counter.rotation.y = Math.PI / 2.2; // Rotate if needed
+
+      counter.traverse((child) => {
+        if (child.isMesh) {
+          child.castShadow = true;
+          child.receiveShadow = true;
+        }
+      });
+
+      scene.add(counter);
+    },
+    undefined,
+    function (error) {
+      console.error('An error occurred loading the burger model:', error);
+    }
+  );
+}
+
+function loadCan() {
+  gltfLoader.load(
+    'models/lager_beer.glb',
+    function (canModel) {
+      can = canModel.scene;
+      can.scale.set(0.03, 0.03, 0.03); // Adjust scale as needed
+      can.position.set(0.3, 0.1, 1.2); // Adjust position to place it on the table
+      can.rotation.y = Math.PI / 6; // Rotate if needed
+
+      can.traverse((child) => {
+        if (child.isMesh) {
+          child.castShadow = true;
+          child.receiveShadow = true;
+        }
+      });
+
+      scene.add(can);
+    },
+    undefined,
+    function (error) {
+      console.error('An error occurred loading the burger model:', error);
+    }
+  );
+}
+
 // ADD LIGHT
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
 scene.add(ambientLight);
@@ -346,21 +400,21 @@ scene.add(pointLight4);
 // scene.add(pointLightHelper);
 
 // ADD GUI
- const gui = new dat.GUI();
- const options = {
-   lightX: 0,
-   lightY: 0.08,
-   lightZ: 0,
- };
- gui.add(options, 'lightX').onChange((e) => {
-   mobileLight.position.setX(e);
- });
- gui.add(options, 'lightY').onChange((e) => {
-   mobileLight.position.setY(e);
- });
- gui.add(options, 'lightZ').onChange((e) => {
-   mobileLight.position.setZ(e);
- });
+ //const gui = new dat.GUI();
+ //const options = {
+   //lightX: 0,
+   //lightY: 0.08,
+   //lightZ: 0,
+ //};
+ //gui.add(options, 'lightX').onChange((e) => {
+   //mobileLight.position.setX(e);
+ //});
+ //gui.add(options, 'lightY').onChange((e) => {
+   //mobileLight.position.setY(e);
+ //});
+ //gui.add(options, 'lightZ').onChange((e) => {
+   //mobileLight.position.setZ(e);
+ //});
 
 const clock = new THREE.Clock();
 function animate() {
