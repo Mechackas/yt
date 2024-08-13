@@ -232,6 +232,7 @@ gltfLoader.load(
     // add event listeners
     logoListener();
     aboutMenuListener();
+    locationMenuListener();
     projectsMenuListener();
     init3DWorldClickListeners();
     initResponsive(room.scene);
@@ -548,18 +549,6 @@ function switchTheme(themeType) {
   }
 }
 
-function initMap() {
-  const location = { lat: -1.9441, lng: 30.0619 }; // Coordinates for Kigali, Rwanda
-  const map = new google.maps.Map(document.getElementById("map"), {
-    zoom: 15,
-    center: location,
-  });
-  new google.maps.Marker({
-    position: location,
-    map: map,
-  });
-}
-
 function enableOrbitControls() {
   controls.enabled = true;
 }
@@ -736,15 +725,55 @@ function projectsMenuListener() {
 }
 
 function locationMenuListener() {
-  document.getElementById('location-menu').addEventListener('click', function(e) {
-    e.preventDefault();
-    document.querySelector('.section--about').style.display = 'none';
-    document.querySelector('.section--location').style.display = 'block';
+  console.log("Setting up location menu listener");
+  const locationMenu = document.getElementById('location-menu');
+  const locationSection = document.querySelector('.section--location');
+  const aboutSection = document.querySelector('.section--about');
+  let mapVisible = false;
+
+  if (!locationMenu) {
+      console.error("Could not find element with id 'location-menu'");
+      return;
+  }
+
+  console.log("Found location menu element:", locationMenu);
+
+  locationMenu.addEventListener('click', function(e) {
+      console.log('Location menu clicked');
+      e.preventDefault();
+      
+      if (!mapVisible) {
+          console.log('Showing map');
+          locationSection.style.display = 'block';
+          aboutSection.style.display = 'none';
+          disableOrbitControls();
+          resetBookCover();
+          resetProjects();
+
+          // Adjust camera for map view
+          gsap.to(camera.position, {
+              x: 3,
+              y: 0,
+              z: 0,
+              duration: 1.5,
+          });
+          gsap.to(camera.rotation, {
+              x: 0,
+              y: 0,
+              z: 0,
+              duration: 1.5,
+          });
+
+          enableCloseBtn();
+      } else {
+          console.log('Hiding map');
+          locationSection.style.display = 'none';
+          resetCamera();
+      }
+
+      mapVisible = !mapVisible;
   });
 }
-
-// Call this function along with your other listener setup functions
-locationMenuListener();
 
   locationMenuListener();
 
